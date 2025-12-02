@@ -7,23 +7,24 @@ on:
 jobs:
 
   Dependances:
-    name: Analyse des dépendances Python
-    runs-on: ubuntu-24.04
+      name: Analyse des dépendances Python
+      runs-on: ubuntu-24.04
       
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
     
-      - name: Scan du fichier requirements.txt
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          input: 'requirements.txt'
-          format: 'table'
-          exit-code: '1'          # <-- ne casse PAS le job même si vuln
-          vuln-type: 'library'
-          severity: 'CRITICAL,HIGH'
-          ignore-unfixed: true
+        - name: Scan du fichier requirements.txt
+          uses: aquasecurity/trivy-action@master
+          with:
+            scan-type: 'fs'
+            input: 'requirements.txt' 
+            format: 'table'
+            exit-code: '1'
+            vuln-type: 'library'
+            severity: 'CRITICAL,HIGH'
+            ignore-unfixed: true
+
 
   Dockerfile:
     name: Analyse du Dockerfile
@@ -40,9 +41,10 @@ jobs:
           scan-type: 'config'
           input: '.'
           format: 'table'
-          exit-code: '1'          # <-- idem ici
+          exit-code: '1'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
+
 
   Deploy:
     name: Deploy (factice)
@@ -53,4 +55,3 @@ jobs:
       - name: Deploy
         run: |
           echo "Votre pipeline DevSecOps est validé. Déploiement fictif."
-
