@@ -15,11 +15,12 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
           | sh -s -- -b /usr/local/bin
 
-      - name: Scan des dépendances Python (requirements.txt seulement)
+      - name: Scan des dépendances Python (requirements.txt)
         run: |
           trivy fs \
             --scanners vuln \
-            --file-patterns 'pip:^requirements\.txt$' \
+            --file-patterns 'pip:requirements\.txt' \
+            --skip-files database-requirements.txt \
             --severity HIGH,CRITICAL \
             .
 
@@ -38,6 +39,7 @@ jobs:
       - name: Deploy
         run: |
           echo "Rien à faire ici. Votre application est prête à être déployée"
+
 
 
 
