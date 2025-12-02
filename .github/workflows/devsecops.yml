@@ -3,6 +3,7 @@ name: Automatisation des tests DevSecOps
 on: push
 
 jobs:
+
   Dependances:
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +16,13 @@ jobs:
           | sh -s -- -b /usr/local/bin
 
       - name: Scan des dépendances Python
-        run: trivy fs --severity HIGH,CRITICAL --exit-code 1 --dependency-tree .
+        run: |
+          trivy fs \
+            --scanners vuln \
+            --file-patterns 'pip:requirements\.txt' \
+            --severity HIGH,CRITICAL \
+            --exit-code 1 \
+            .
 
   Dockerfile:
     runs-on: ubuntu-latest
@@ -32,4 +39,5 @@ jobs:
       - name: Deploy
         run: |
           echo "Rien à faire ici. Votre application est prête à être déployée"
+
 
