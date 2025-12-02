@@ -9,16 +9,13 @@ jobs:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
-      - name: Installer Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+      - name: Installer Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+          | sh -s -- -b /usr/local/bin
 
-      - name: Installer pip-audit
-        run: pip install pip-audit
-
-      - name: Contrôler requirements.txt
-        run: pip-audit -r requirements.txt --strict
+      - name: Scan des dépendances Python
+        run: trivy fs --severity HIGH,CRITICAL --exit-code 1 --dependency-tree .
 
   Dockerfile:
     runs-on: ubuntu-latest
